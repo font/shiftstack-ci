@@ -12,9 +12,8 @@ source ${CONFIG}
 
 set -x
 
-# check whether we have a free floating IP
-FLOATING_IP=$(openstack floating ip list --status DOWN --network ${OPENSTACK_EXTERNAL_NETWORK} --long --format value -c "Floating IP Address" -c Description | sed 's/ .*//g')
-FLOATING_IP=$(echo ${FLOATING_IP} | cut -d ' ' -f1)
+# check whether we have a free floating IP for this cluster name to use for the API server
+FLOATING_IP=$(openstack floating ip list --status DOWN --network ${OPENSTACK_EXTERNAL_NETWORK} --long --format value -c "Floating IP Address" -c Description | grep "${CLUSTER_NAME}-api" | awk '{print $1}')
 
 # create new floating ip if doesn't exist
 if [ -z "${FLOATING_IP}" ]; then
@@ -98,7 +97,7 @@ openshift-install --log-level=debug ${1:-create} ${2:-cluster}
 # check whether we have a free floating IP
 INGRESS_PORT=$(openstack port list --format value -c Name | awk "/${CLUSTER_NAME}.*-ingress-port/ {print}")
 if [ -n "${INGRESS_PORT}" ]; then
-  APPS_FLOATING_IP=$(openstack floating ip list --status DOWN --network ${OPENSTACK_EXTERNAL_NETWORK} --long --format value -c "Floating IP Address" -c Description | awk 'NF<=1 && NR==1 {print}')
+  APPS_FLOATING_IP=$(openstack floating ip list --status DOWN --network ${OPENSTACK_EXTERNAL_NETWORK} --long --format value -c "Floating IP Address" -c Description | grep "${CLUSTER_NAME}-app" | awk '{print $1}')
 
   # create new floating ip if doesn't exist
   if [ -z "${APPS_FLOATING_IP}" ]; then
