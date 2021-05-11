@@ -7,7 +7,7 @@ It is complementary to
 [ocp-doit](https://github.com/shiftstack-dev-tools/ocp-doit) that focus on
 deploying OCP using a standalone TripleO.
 
-## Pre-Requisits
+## Prerequisites
 
 Access to an OpenStack cloud fitting the [OpenShift on OpenStack
 requirements](https://github.com/openshift/installer/tree/master/docs/user/openstack).
@@ -70,7 +70,6 @@ Here is a rundown of the important fields you will likely have to modify:
 ```
 OS_CLOUD           The cloud in your openstack cluster that resources will be consumed from.
 CLUSTER_NAME       What your ocp cluster will be nicknamed. This naming scheme is propogated to all resources in the cluster.
-OPENSTACK_REGION   The cluster region that resources will be consumed from. For the moc, use moc-kzn
 ```
 
 Finally you need to obtain a pull secret from [here](https://cloud.redhat.com/openshift/install/osp/installer-provisioned),
